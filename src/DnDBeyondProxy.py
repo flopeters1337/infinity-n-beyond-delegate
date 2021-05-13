@@ -58,7 +58,7 @@ class DnDBeyondProxy:
             try:
                 headers = {'Authorization': 'Bearer {0}'.format(self._token)}
                 params = {'classId': class_id, 'classLevel': 20}
-                result = requests.get(config.ITEMS_URL, headers=headers, params=params).json()['data']
+                result = requests.get(config.SPELLS_URL, headers=headers, params=params).json()['data']
                 aggregator = [*aggregator, *result]  # Merge new results with the previous ones
 
             except KeyError:
