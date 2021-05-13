@@ -1,0 +1,5 @@
+AUTH_URL = 'https://auth-service.dndbeyond.com/v1/cobalt-token'
+ITEMS_URL = 'https://character-service.dndbeyond.com/character/v4/game-data/items'
+SPELLS_URL = 'https://character-service.dndbeyond.com/character/v4/game-data/spells'
+MONSTER_URL = 'https://monster-service.dndbeyond.com/v1/Monster'
+CHARACTER_URL = 'https://character-service.dndbeyond.com/character/v4/character/{0}'
