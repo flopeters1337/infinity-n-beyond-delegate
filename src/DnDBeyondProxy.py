@@ -62,7 +62,7 @@ class DnDBeyondProxy:
                 aggregator = [*aggregator, *result]  # Merge new results with the previous ones
 
             except KeyError:
-                raise RuntimeError('Failed to obtain items.')
+                raise RuntimeError('Failed to obtain spells.')
 
         # Create the output file
         final_path = os.path.join(self._output_folder, 'raw')
