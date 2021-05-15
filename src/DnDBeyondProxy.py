@@ -33,6 +33,12 @@ class DnDBeyondProxy:
             except KeyError:
                 raise ConnectionError('Failed to authenticate using Cobalt key.')
 
+    def _dump_data(self, data, filename):
+        final_path = os.path.join(self._output_folder, 'raw')
+        Path(final_path).mkdir(parents=True, exist_ok=True)
+        with open(os.path.join(final_path, filename), mode='w') as fd:
+            json.dump(data, fd)
+
     def get_items(self):
         self._authenticate()
         try:
@@ -40,11 +46,7 @@ class DnDBeyondProxy:
             result = requests.get(config.ITEMS_URL, headers=headers)
             result = result.json()
 
-            # Create the output file
-            final_path = os.path.join(self._output_folder, 'raw')
-            Path(final_path).mkdir(parents=True, exist_ok=True)
-            with open(os.path.join(final_path, 'items.json'), mode='w') as fd:
-                json.dump(result['data'], fd)
+            self._dump_data(result['data'], 'items.json')
         except KeyError:
             raise RuntimeError('Failed to obtain items.')
 
@@ -64,8 +66,4 @@ class DnDBeyondProxy:
             except KeyError:
                 raise RuntimeError('Failed to obtain spells.')
 
-        # Create the output file
-        final_path = os.path.join(self._output_folder, 'raw')
-        Path(final_path).mkdir(parents=True, exist_ok=True)
-        with open(os.path.join(final_path, 'spells.json'), mode='w') as fd:
-            json.dump(aggregator, fd)
+        self._dump_data(aggregator, 'spells.json')
