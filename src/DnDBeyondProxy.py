@@ -50,6 +50,26 @@ class DnDBeyondProxy:
         except KeyError:
             raise RuntimeError('Failed to obtain items.')
 
+    def get_monsters(self, skip_size=100):
+        aggregator = []
+        count_current = None
+        skip = 0
+
+        while count_current is None or count_current > 0:
+            self._authenticate()
+            try:
+                logging.info('Fetching {0} monsters after skipping {1}'.format(100, skip))
+                headers = {'Authorization': 'Bearer {0}'.format(self._token)}
+                params = {'skip': skip, 'take': 100, 'showHomebrew': 'f'}
+                result = requests.get(config.MONSTER_URL, headers=headers, params=params).json()
+                count_current = len(result['data'])
+                aggregator = [*aggregator, *result['data']]
+                skip += skip_size
+            except KeyError:
+                raise RuntimeError('Failed to obtain monsters.')
+
+        self._dump_data(aggregator, 'monsters.json')
+
     def get_spells(self):
         classes = {x['id'] for x in self._mapping['classConfigurations']}
         aggregator = []
